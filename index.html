@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Pumpkin's Purrfect Cat Meme Picker - Match your mood with hilarious cat memes and animated GIFs! Created by Virat Katiyar.">
+    <meta name="keywords" content="cat memes, cat gifs, meme generator, cat emotion picker, Virat Katiyar">
+    <meta name="author" content="Virat Katiyar">
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="Cat Memer - Pumpkin's Purrfect Meme Picker">
+    <meta property="og:description" content="Match your mood with hilarious cat memes and animated GIFs!">
+    <meta property="og:type" content="website">
+
+    <title>Cat Memer | Pumpkin's Purrfect Meme Picker</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- App Styles -->
+    <link rel="stylesheet" href="index.css">
+</head>
+<body class="dark-theme">
+    <!-- Confetti Canvas -->
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- App Background Shapes -->
+    <div class="bg-blur bg-blur-1"></div>
+    <div class="bg-blur bg-blur-2"></div>
+
+    <header class="app-header">
+        <div class="header-container">
+            <div class="brand">
+                <div class="logo-wrapper">
+                    <img src="./images/pumpkin.png" alt="Pumpkin the Cat Logo" class="pumpkin-img">
+                    <span class="logo-badge">v2.0</span>
+                </div>
+                <div class="brand-text">
+                    <span class="sub-headline">Pumpkin's Purrfect...</span>
+                    <h1 class="main-title">Meme Picker</h1>
+                </div>
+            </div>
+
+            <div class="header-actions">
+                <button class="icon-btn" id="sound-toggle-btn" title="Toggle Sound FX (Meow)" aria-label="Toggle Sound">
+                    <i class="fa-solid fa-volume-high" id="sound-icon"></i>
+                </button>
+                <button class="icon-btn" id="theme-toggle-btn" title="Toggle Light/Dark Theme" aria-label="Toggle Theme">
+                    <i class="fa-solid fa-moon" id="theme-icon"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="app-main">
+        <div class="main-card glass-panel">
+            <div class="card-header">
+                <h2>Select Your Current Mood</h2>
+                <p class="card-subtitle">Choose an emotion below to discover your cat meme match</p>
+            </div>
+
+            <div class="search-filter-box">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" id="emotion-search" placeholder="Search mood (e.g. happy, moody, hungry)...">
+            </div>
+
+            <div class="controls-container">
+                <div class="emotion-radios" id="emotion-radios" role="radiogroup" aria-label="Cat Emotions">
+                    <!-- Dynamic Emotion Radio Pills loaded from index.js -->
+                </div>
+
+                <div class="options-row">
+                    <label class="toggle-switch" for="gifs-only-option">
+                        <input type="checkbox" id="gifs-only-option">
+                        <span class="slider"></span>
+                        <span class="toggle-label">
+                            <i class="fa-solid fa-film"></i> Animated GIFs Only
+                        </span>
+                    </label>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="primary-btn get-image-btn" id="get-image-btn">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> Get Cat Meme
+                    </button>
+                    <button class="secondary-btn surprise-btn" id="surprise-btn" title="Pick a completely random cat meme">
+                        <i class="fa-solid fa-dice"></i> Surprise Me!
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Meme Modal -->
+    <div class="meme-modal-backdrop" id="meme-modal-backdrop">
+        <div class="meme-modal glass-panel" id="meme-modal" role="dialog" aria-modal="true" aria-labelledby="meme-title">
+            <button class="meme-modal-close-btn" id="meme-modal-close-btn" aria-label="Close modal">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            
+            <div class="modal-header">
+                <span class="modal-badge" id="modal-emotion-badge">😺 Happy Cat</span>
+                <h3 id="meme-title">Your Cat Meme Match!</h3>
+            </div>
+
+            <div class="modal-body" id="meme-modal-inner">
+                <div class="loading-spinner" id="modal-spinner">
+                    <i class="fa-solid fa-cat fa-spin"></i>
+                    <p>Fetching purrfect cat...</p>
+                </div>
+                <!-- Dynamic Meme Image inserted here -->
+            </div>
+
+            <div class="modal-actions">
+                <button class="modal-btn" id="download-meme-btn" title="Download image">
+                    <i class="fa-solid fa-download"></i> Download
+                </button>
+                <button class="modal-btn" id="copy-link-btn" title="Copy meme image URL">
+                    <i class="fa-solid fa-link"></i> Copy Link
+                </button>
+                <button class="modal-btn primary-action" id="next-meme-btn" title="Get another meme with same filter">
+                    <i class="fa-solid fa-rotate"></i> Another One
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <i class="fa-solid fa-circle-check toast-icon"></i>
+        <span id="toast-message">Copied to clipboard!</span>
+    </div>
+
+    <footer class="app-footer">
+        <div class="footer-container">
+            <p>Crafted with 💖 by <strong>Virat Katiyar</strong></p>
+            <div class="footer-links">
+                <a href="https://github.com/viratkatiyar" target="_blank" rel="noopener noreferrer" title="Virat Katiyar on GitHub">
+                    <i class="fa-brands fa-github"></i> GitHub
+                </a>
+                <a href="https://linkedin.com/in/viratkatiyar" target="_blank" rel="noopener noreferrer" title="Virat Katiyar on LinkedIn">
+                    <i class="fa-brands fa-linkedin"></i> LinkedIn
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="index.js" type="module"></script>
+</body>
+</html>
